@@ -54,7 +54,7 @@ module todolistservice 'container_app.bicep' = {
 // create the client web app container app
 var frontend_config = [
   {
-    name: 'TodoListApi'
+    name: 'TodoListBaseAddress'
     value: 'http://${todolistservice.outputs.fqdn}'
   } 
 ]

@@ -42,7 +42,7 @@ namespace TodoListClient.Services
             _tokenAcquisition = tokenAcquisition;
             _contextAccessor = contextAccessor;
             _TodoListScope = configuration["TodoList:TodoListScope"];
-            _TodoListBaseAddress = configuration["TodoList:TodoListBaseAddress"];
+            _TodoListBaseAddress = configuration["TodoListBaseAddress"];
         }
 
         public async Task<Todo> AddAsync(Todo todo)

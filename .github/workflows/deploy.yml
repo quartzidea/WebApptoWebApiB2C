@@ -13,7 +13,7 @@ env:
   # specify your preferred region
   REGION: eastus
 
-  CLIENT_DOCKER: TodoListClient/Dockerfile
+  CLIENT_DOCKER: Client/Dockerfile
   CLIENT_IMAGE: todolistclient
 
   API_DOCKER: TodoListService/Dockerfile
