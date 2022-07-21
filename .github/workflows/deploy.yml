@@ -14,10 +14,10 @@ env:
   REGION: eastus
 
   CLIENT_DOCKER: TodoListClient/Dockerfile
-  CLIENT_IMAGE: TodoListClient
+  CLIENT_IMAGE: todoListClient
 
   API_DOCKER: TodoListService/Dockerfile
-  API_IMAGE: TodoListService  
+  API_IMAGE: todoListService  
 
 jobs:
   provision:
