@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  todolistservice:
+    image: ${DOCKER_REGISTRY-}todolistservice
+    build:
+      context: .
+      dockerfile: TodoListService/Dockerfile
+  
+  todolistclient:
+    depends_on:
+      - todolistservice
+    image: ${DOCKER_REGISTRY-}todolistclient
+    build:
+      context: .
+      dockerfile: Client/Dockerfile
+
