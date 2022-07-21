@@ -36,11 +36,11 @@ var shared_config = [
   }
 ]
 
-// create the products api container app
-module products 'container_app.bicep' = {
-  name: 'products'
+// create the  api container app
+module todolistservice 'container_app.bicep' = {
+  name: 'todolistservice'
   params: {
-    name: 'products'
+    name: 'todolistservice'
     location: location
     registryPassword: acr.listCredentials().passwords[0].value
     registryUsername: acr.listCredentials().username
@@ -51,37 +51,18 @@ module products 'container_app.bicep' = {
   }
 }
 
-// create the inventory api container app
-module inventory 'container_app.bicep' = {
-  name: 'inventory'
-  params: {
-    name: 'inventory'
-    location: location
-    registryPassword: acr.listCredentials().passwords[0].value
-    registryUsername: acr.listCredentials().username
-    containerAppEnvironmentId: env.outputs.id
-    registry: acr.name
-    envVars: shared_config
-    externalIngress: false
-  }
-}
-
-// create the store api container app
+// create the client web app container app
 var frontend_config = [
   {
-    name: 'ProductsApi'
-    value: 'http://${products.outputs.fqdn}'
-  }
-  {
-    name: 'InventoryApi'
-    value: 'http://${inventory.outputs.fqdn}'
-  }
+    name: 'TodoListApi'
+    value: 'http://${todolistservice.outputs.fqdn}'
+  } 
 ]
 
-module store 'container_app.bicep' = {
-  name: 'store'
+module todolistclient 'container_app.bicep' = {
+  name: 'todolistclient'
   params: {
-    name: 'store'
+    name: 'todolistclient'
     location: location
     registryPassword: acr.listCredentials().passwords[0].value
     registryUsername: acr.listCredentials().username
