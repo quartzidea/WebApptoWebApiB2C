@@ -8,16 +8,16 @@ on:
 env:
   
   # alphanumeric string under 14 characters
-  RESOURCE_GROUP_NAME: acab2csample
+  RESOURCE_GROUP_NAME: acab3csample
 
   # specify your preferred region
   REGION: eastus
 
   CLIENT_DOCKER: TodoListClient/Dockerfile
-  CLIENT_IMAGE: todoListClient
+  CLIENT_IMAGE: todolistclient
 
   API_DOCKER: TodoListService/Dockerfile
-  API_IMAGE: todoListService  
+  API_IMAGE: todolistservice  
 
 jobs:
   provision:
@@ -121,13 +121,13 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: >
-          az containerapp registry set -n todoListService -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
+          az containerapp registry set -n todolistservice -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
 
-          az containerapp update -n todoListService -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.API_IMAGE }}:${{ github.sha }}          
+          az containerapp update -n todolistservice -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.API_IMAGE }}:${{ github.sha }}          
 
-          az containerapp registry set -n todoListClient -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
+          az containerapp registry set -n todoListclient -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
           
-          az containerapp update -n todoListClient -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.CLIENT_IMAGE }}:${{ github.sha }}
+          az containerapp update -n todolistclient -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.CLIENT_IMAGE }}:${{ github.sha }}
 
     - name: logout
       run: >

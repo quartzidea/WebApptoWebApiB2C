@@ -8,8 +8,8 @@ param minReplicas int = 1
 param maxReplicas int = 1
 param port int = 80
 param externalIngress bool = false
-param allowInsecure bool = true
-param transport string = 'http'
+param allowInsecure bool = false
+param transport string = 'https'
 param registryUsername string
 @secure()
 param registryPassword string
