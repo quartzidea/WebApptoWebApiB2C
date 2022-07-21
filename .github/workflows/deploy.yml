@@ -8,19 +8,16 @@ on:
 env:
   
   # alphanumeric string under 14 characters
-  RESOURCE_GROUP_NAME: acasample
+  RESOURCE_GROUP_NAME: acab2csample
 
   # specify your preferred region
   REGION: eastus
 
-  STORE_DOCKER: Store/Dockerfile
-  STORE_IMAGE: store
+  CLIENT_DOCKER: TodoListClient/Dockerfile
+  CLIENT_IMAGE: TodoListClient
 
-  INVENTORY_DOCKER: Store.InventoryApi/Dockerfile
-  INVENTORY_IMAGE: inventory
-
-  PRODUCTS_DOCKER: Store.ProductApi/Dockerfile
-  PRODUCTS_IMAGE: products
+  API_DOCKER: TodoListService/Dockerfile
+  API_IMAGE: TodoListService  
 
 jobs:
   provision:
@@ -81,22 +78,15 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.PRODUCTS_IMAGE }}:${{ github.sha }}
-        file: ${{ env.PRODUCTS_DOCKER }}
-
-    - name: Build the inventory api image and push it to ACR
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.INVENTORY_IMAGE }}:${{ github.sha }}
-        file: ${{ env.INVENTORY_DOCKER }}
+        tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.API_IMAGE }}:${{ github.sha }}
+        file: ${{ env.API_DOCKER }}
 
     - name: Build the frontend image and push it to ACR
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.STORE_IMAGE }}:${{ github.sha }}
-        file: ${{ env.STORE_DOCKER }}
+        tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.CLIENT_IMAGE }}:${{ github.sha }}
+        file: ${{ env.CLIENT_DOCKER }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -133,15 +123,11 @@ jobs:
         inlineScript: >
           az containerapp registry set -n products -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
 
-          az containerapp update -n products -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.PRODUCTS_IMAGE }}:${{ github.sha }}
-
-          az containerapp registry set -n inventory -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
-
-          az containerapp update -n inventory -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.INVENTORY_IMAGE }}:${{ github.sha }}
+          az containerapp update -n products -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.API_IMAGE }}:${{ github.sha }}          
 
           az containerapp registry set -n store -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
           
-          az containerapp update -n store -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.STORE_IMAGE }}:${{ github.sha }}
+          az containerapp update -n store -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.CLIENT_IMAGE }}:${{ github.sha }}
 
     - name: logout
       run: >
