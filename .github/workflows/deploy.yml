@@ -128,6 +128,7 @@ jobs:
           az containerapp registry set -n todolistclient -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
           
           az containerapp update -n todolistclient -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.CLIENT_IMAGE }}:${{ github.sha }}
+          
 
     - name: logout
       run: >
